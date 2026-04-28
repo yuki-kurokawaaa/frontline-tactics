@@ -1,0 +1,403 @@
+:root {
+  color-scheme: dark;
+  --bg: #111314;
+  --panel: #1b1f21;
+  --panel-2: #24292c;
+  --text: #f1f4ef;
+  --muted: #aab3a7;
+  --blue: #55a7ff;
+  --red: #ff6f63;
+  --gold: #f2c75b;
+  --line: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #2c3335;
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 14px;
+}
+
+button:hover {
+  background: #394145;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.app {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+#status {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.game-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 14px;
+  align-items: start;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  align-self: start;
+  aspect-ratio: 3 / 2;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #222824;
+  touch-action: none;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.panel-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 12px;
+}
+
+.unit-info {
+  margin-top: 10px;
+  min-height: 120px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.delegate-btn {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.build-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.build-actions button {
+  min-height: 34px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.score {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 14px;
+  align-items: center;
+}
+
+.score strong {
+  font-size: 20px;
+}
+
+.production-info {
+  margin-top: 10px;
+  min-height: 42px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.production-actions {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.production-actions button {
+  min-height: 34px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.tech-tree {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.tech-tree span {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #202527;
+}
+
+.tech-tree .unlocked {
+  color: var(--text);
+  border-color: rgba(85, 167, 255, 0.48);
+}
+
+.legend {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend i {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.plain {
+  background: #5f754f;
+}
+
+.forest {
+  background: #2f5e3a;
+}
+
+.city {
+  background: #777269;
+}
+
+.factory {
+  background: #6f6b84;
+}
+
+.mountain {
+  background: #77644e;
+}
+
+.water {
+  background: #315f78;
+}
+
+.log-wrap {
+  min-height: 180px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.log {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  max-height: 260px;
+  overflow: auto;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.log li + li {
+  margin-top: 6px;
+}
+
+.victory-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(10, 12, 12, 0.76);
+}
+
+.victory-overlay[hidden] {
+  display: none;
+}
+
+.victory-dialog {
+  width: min(440px, 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: #1b1f21;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.victory-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(242, 199, 91, 0.14);
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.victory-dialog h2 {
+  margin-top: 16px;
+  color: var(--text);
+  font-size: 38px;
+  line-height: 1;
+  text-transform: none;
+}
+
+.victory-dialog p {
+  margin-top: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.victory-dialog button {
+  margin-top: 22px;
+  min-width: 132px;
+  background: var(--gold);
+  color: #171612;
+  border-color: transparent;
+}
+
+.victory-dialog button:hover {
+  background: #ffd76d;
+}
+
+.rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(10, 12, 12, 0.72);
+}
+
+.rules-overlay[hidden] {
+  display: none;
+}
+
+.rules-dialog {
+  width: min(560px, 100%);
+  max-height: min(720px, 88vh);
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: #1b1f21;
+  padding: 24px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.rules-dialog h2 {
+  color: var(--text);
+  font-size: 22px;
+  text-transform: none;
+}
+
+.rules-dialog ul {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.rules-dialog li + li {
+  margin-top: 8px;
+}
+
+.rules-dialog button {
+  margin-top: 18px;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .app {
+    padding: 12px;
+  }
+
+  .topbar,
+  .game-shell {
+    display: block;
+  }
+
+  .actions {
+    margin-top: 12px;
+    justify-content: flex-start;
+  }
+
+  .panel {
+    margin-top: 12px;
+  }
+}

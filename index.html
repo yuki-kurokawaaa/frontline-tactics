@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Frontline Tactics</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="topbar" aria-label="Game status">
+        <div>
+          <h1>Frontline Tactics</h1>
+          <p id="status">自軍ターン: ユニットを選択</p>
+        </div>
+        <div class="actions">
+          <button id="rulesBtn" type="button" title="ルール">ルール</button>
+          <button id="undoBtn" type="button" title="一手戻す">一手戻す</button>
+          <button id="endTurnBtn" type="button" title="ターン終了">ターン終了</button>
+          <button id="restartBtn" type="button" title="最初から">再戦</button>
+        </div>
+      </section>
+
+      <section class="game-shell">
+        <canvas id="game" width="1920" height="1280" aria-label="Turn based strategy map"></canvas>
+        <aside class="panel" aria-label="Unit information">
+          <div id="selectionPanel" class="panel-section">
+            <h2>選択中</h2>
+            <div id="unitInfo" class="unit-info">未選択</div>
+            <button id="delegateBtn" class="delegate-btn" type="button">委任する</button>
+            <div class="build-actions">
+              <button id="buildBunkerBtn" type="button">バンカー建設</button>
+              <button id="buildFactoryBtn" type="button">工場建設</button>
+            </div>
+          </div>
+          <div class="panel-section">
+            <h2>戦況</h2>
+            <div class="score">
+              <span>Blue</span><strong id="blueCount">0</strong>
+              <span>Red</span><strong id="redCount">0</strong>
+              <span>資金</span><strong id="moneyCount">0</strong>
+              <span>収入</span><strong id="incomeCount">0</strong>
+              <span>研究</span><strong id="researchCount">0</strong>
+            </div>
+          </div>
+          <div class="panel-section">
+            <h2>研究</h2>
+            <div id="researchInfo" class="production-info">都市を研究都市にアップグレード</div>
+            <button id="upgradeCityBtn" class="delegate-btn" type="button">研究都市にする</button>
+            <button id="researchTechBtn" class="delegate-btn" type="button">技術ツリー</button>
+            <div id="techTree" class="tech-tree"></div>
+          </div>
+          <div id="productionPanel" class="panel-section">
+            <h2>生産</h2>
+            <div id="productionInfo" class="production-info">自軍工場を選択</div>
+            <div class="production-actions">
+              <button type="button" data-produce="infantry">歩兵</button>
+              <button type="button" data-produce="engineer">工兵</button>
+              <button type="button" data-produce="recon">偵察車</button>
+              <button type="button" data-produce="tank">戦車</button>
+              <button type="button" data-produce="heavyTank">重戦車</button>
+              <button type="button" data-produce="artillery">自走砲</button>
+            </div>
+            <div id="autoProductionInfo" class="production-info">継続生産なし</div>
+            <div class="production-actions">
+              <button type="button" data-auto-produce="infantry">歩兵委任</button>
+              <button type="button" data-auto-produce="engineer">工兵委任</button>
+              <button type="button" data-auto-produce="recon">偵察車委任</button>
+              <button type="button" data-auto-produce="tank">戦車委任</button>
+              <button type="button" data-auto-produce="heavyTank">重戦車委任</button>
+              <button type="button" data-auto-produce="artillery">自走砲委任</button>
+            </div>
+            <button id="clearAutoProductionBtn" class="delegate-btn" type="button">継続生産を解除</button>
+          </div>
+          <div class="panel-section">
+            <h2>地形</h2>
+            <div class="legend">
+              <span><i class="plain"></i>平地</span>
+              <span><i class="forest"></i>森</span>
+              <span><i class="city"></i>都市</span>
+              <span><i class="factory"></i>工場</span>
+              <span><i class="mountain"></i>山</span>
+              <span><i class="water"></i>水域</span>
+            </div>
+          </div>
+          <div class="panel-section log-wrap">
+            <h2>ログ</h2>
+            <ol id="log" class="log"></ol>
+          </div>
+        </aside>
+      </section>
+
+      <section id="victoryOverlay" class="victory-overlay" aria-live="polite" hidden>
+        <div class="victory-dialog" role="dialog" aria-modal="true" aria-labelledby="victoryTitle">
+          <span id="victoryBadge" class="victory-badge">作戦完了</span>
+          <h2 id="victoryTitle">Blue 勝利</h2>
+          <p id="victoryText">敵部隊をすべて撃破しました。</p>
+          <button id="victoryRestartBtn" type="button">再戦</button>
+        </div>
+      </section>
+
+      <section id="rulesOverlay" class="rules-overlay" aria-live="polite" hidden>
+        <div class="rules-dialog" role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+          <h2 id="rulesTitle">ルール</h2>
+          <ul>
+            <li>Blueが自軍、Redが敵軍です。敵部隊を全滅させると勝利です。</li>
+            <li>ユニットを選ぶと移動可能範囲が白く表示されます。範囲外をクリックすると選択解除します。</li>
+            <li>歩兵だけが都市・工場を占領できます。占領はターン終了時に発生します。</li>
+            <li>都市は毎ターン資金を生みます。都市は資金で研究都市にできます。</li>
+            <li>研究都市は研究ポイントを生み、技術ツリーで新ユニットを解放できます。</li>
+            <li>工場ではユニットを生産できます。生産直後のユニットは配備中で、そのターンは動けません。</li>
+            <li>工兵はバンカーや工場を建設できます。バンカー上のユニットは防御が上がります。</li>
+            <li>委任ONの味方ユニットはBotが自動で移動・攻撃します。</li>
+          </ul>
+          <button id="closeRulesBtn" type="button">閉じる</button>
+        </div>
+      </section>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
