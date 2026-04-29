@@ -8,13 +8,38 @@
   </head>
   <body>
     <main class="app">
+      <section id="titleOverlay" class="title-overlay" aria-live="polite">
+        <div class="title-dialog" role="dialog" aria-modal="true" aria-labelledby="titleName">
+          <p class="title-kicker">Turn Based Strategy</p>
+          <h2 id="titleName">Frontline Tactics</h2>
+          <div class="map-select" aria-label="マップ選択">
+            <button class="map-card selected" type="button" data-map="standard">
+              <strong>中央戦線</strong>
+              <span>森と丘を挟んで展開する標準マップ</span>
+            </button>
+            <button class="map-card" type="button" data-map="open">
+              <strong>平原突破</strong>
+              <span>障害物が少なく、機動戦になりやすいマップ</span>
+            </button>
+            <button class="map-card" type="button" data-map="ridge">
+              <strong>島嶼海戦</strong>
+              <span>港から艦艇を出して島同士で争う海上マップ</span>
+            </button>
+          </div>
+          <button id="startGameBtn" class="start-game-btn" type="button">開始</button>
+        </div>
+      </section>
+
       <section class="topbar" aria-label="Game status">
         <div>
           <h1>Frontline Tactics</h1>
           <p id="status">自軍ターン: ユニットを選択</p>
         </div>
         <div class="actions">
+          <button id="titleBtn" type="button" title="タイトルへ">タイトル</button>
           <button id="rulesBtn" type="button" title="ルール">ルール</button>
+          <button id="unitGuideBtn" type="button" title="ユニット性能表">性能表</button>
+          <button id="soundBtn" type="button" title="音ON">音ON</button>
           <button id="undoBtn" type="button" title="一手戻す">一手戻す</button>
           <button id="endTurnBtn" type="button" title="ターン終了">ターン終了</button>
           <button id="restartBtn" type="button" title="最初から">再戦</button>
@@ -31,6 +56,7 @@
             <div class="build-actions">
               <button id="buildBunkerBtn" type="button">バンカー建設</button>
               <button id="buildFactoryBtn" type="button">工場建設</button>
+              <button id="buildAirportBtn" type="button">空港建設</button>
             </div>
           </div>
           <div class="panel-section">
@@ -40,19 +66,22 @@
               <span>Red</span><strong id="redCount">0</strong>
               <span>資金</span><strong id="moneyCount">0</strong>
               <span>収入</span><strong id="incomeCount">0</strong>
-              <span>研究</span><strong id="researchCount">0</strong>
             </div>
           </div>
           <div class="panel-section">
-            <h2>研究</h2>
-            <div id="researchInfo" class="production-info">都市を研究都市にアップグレード</div>
-            <button id="upgradeCityBtn" class="delegate-btn" type="button">研究都市にする</button>
-            <button id="researchTechBtn" class="delegate-btn" type="button">技術ツリー</button>
+            <h2>技術ツリー</h2>
+            <div id="techInfo" class="production-info">資金で新兵器を解放</div>
+            <button id="researchTechBtn" class="delegate-btn" type="button">解放する</button>
             <div id="techTree" class="tech-tree"></div>
+          </div>
+          <div id="cityPanel" class="panel-section">
+            <h2>都市</h2>
+            <div id="cityInfo" class="production-info">自軍都市を選択</div>
+            <button id="upgradeCityBtn" class="delegate-btn" type="button">都市強化</button>
           </div>
           <div id="productionPanel" class="panel-section">
             <h2>生産</h2>
-            <div id="productionInfo" class="production-info">自軍工場を選択</div>
+            <div id="productionInfo" class="production-info">自軍工場・空港・港を選択</div>
             <div class="production-actions">
               <button type="button" data-produce="infantry">歩兵</button>
               <button type="button" data-produce="engineer">工兵</button>
@@ -60,6 +89,14 @@
               <button type="button" data-produce="tank">戦車</button>
               <button type="button" data-produce="heavyTank">重戦車</button>
               <button type="button" data-produce="artillery">自走砲</button>
+              <button type="button" data-produce="rocketArtillery">ロケット砲</button>
+              <button type="button" data-produce="icbm">ICBM</button>
+              <button type="button" data-produce="nuke">核ミサイル</button>
+              <button type="button" data-produce="fighter">戦闘機</button>
+              <button type="button" data-produce="bomber">爆撃機</button>
+              <button type="button" data-produce="patrolBoat">魚雷艇</button>
+              <button type="button" data-produce="destroyer">駆逐艦</button>
+              <button type="button" data-produce="landingShip">揚陸艦</button>
             </div>
             <div id="autoProductionInfo" class="production-info">継続生産なし</div>
             <div class="production-actions">
@@ -69,6 +106,14 @@
               <button type="button" data-auto-produce="tank">戦車委任</button>
               <button type="button" data-auto-produce="heavyTank">重戦車委任</button>
               <button type="button" data-auto-produce="artillery">自走砲委任</button>
+              <button type="button" data-auto-produce="rocketArtillery">ロケット砲委任</button>
+              <button type="button" data-auto-produce="icbm">ICBM委任</button>
+              <button type="button" data-auto-produce="nuke">核ミサイル委任</button>
+              <button type="button" data-auto-produce="fighter">戦闘機委任</button>
+              <button type="button" data-auto-produce="bomber">爆撃機委任</button>
+              <button type="button" data-auto-produce="patrolBoat">魚雷艇委任</button>
+              <button type="button" data-auto-produce="destroyer">駆逐艦委任</button>
+              <button type="button" data-auto-produce="landingShip">揚陸艦委任</button>
             </div>
             <button id="clearAutoProductionBtn" class="delegate-btn" type="button">継続生産を解除</button>
           </div>
@@ -79,6 +124,9 @@
               <span><i class="forest"></i>森</span>
               <span><i class="city"></i>都市</span>
               <span><i class="factory"></i>工場</span>
+              <span><i class="bunker"></i>バンカー</span>
+              <span><i class="airport"></i>空港</span>
+              <span><i class="harbor"></i>港</span>
               <span><i class="mountain"></i>山</span>
               <span><i class="water"></i>水域</span>
             </div>
@@ -104,15 +152,32 @@
           <h2 id="rulesTitle">ルール</h2>
           <ul>
             <li>Blueが自軍、Redが敵軍です。敵部隊を全滅させると勝利です。</li>
+            <li>星印の都市は首都です。自軍首都を占領されると敗北、敵首都を占領すると勝利です。</li>
             <li>ユニットを選ぶと移動可能範囲が白く表示されます。範囲外をクリックすると選択解除します。</li>
-            <li>歩兵だけが都市・工場を占領できます。占領はターン終了時に発生します。</li>
-            <li>都市は毎ターン資金を生みます。都市は資金で研究都市にできます。</li>
-            <li>研究都市は研究ポイントを生み、技術ツリーで新ユニットを解放できます。</li>
-            <li>工場ではユニットを生産できます。生産直後のユニットは配備中で、そのターンは動けません。</li>
-            <li>工兵はバンカーや工場を建設できます。バンカー上のユニットは防御が上がります。</li>
+            <li>歩兵と揚陸艦が都市・工場・空港・港を占領できます。占領はターン終了時に発生します。</li>
+            <li>中央付近の中立都市を5ターン保持しても勝利できます。</li>
+            <li>都市は毎ターン資金を生みます。自軍都市は資金で強化でき、収入が増えます。</li>
+            <li>都市・工場・港などの補給源から遠いユニットは移動力と攻撃力が下がります。</li>
+            <li>ユニットと施設には視界があります。視界外の敵は表示されず、攻撃できません。</li>
+            <li>森や都市では歩兵が守りやすく、戦車・航空機・艦艇には相性補正があります。</li>
+            <li>技術ツリーは資金で解放できます。ロケット砲、ICBM、核兵器を追加生産できます。</li>
+            <li>ICBMはマップ上のどの敵にも攻撃できますが、発射後に消滅します。核ミサイルも射程全域・使い切りで、敵ユニットを一撃で撃破し、都市・工場・空港・港・首都などの施設を破壊できます。</li>
+            <li>工場では地上ユニット、空港では空軍ユニット、港では海上ユニットを生産できます。生産直後のユニットは配備中で、そのターンは動けません。</li>
+            <li>海上ユニットは水域と港を移動できます。魚雷艇は高速、駆逐艦は射程と火力、揚陸艦は占領が特徴です。</li>
+            <li>工兵はバンカー・工場・空港を建設できます。工場と空港は工兵が現場に留まって3ターン作業すると完成します。</li>
+            <li>空軍ユニットは地形の移動コストを無視して移動できます。</li>
             <li>委任ONの味方ユニットはBotが自動で移動・攻撃します。</li>
           </ul>
           <button id="closeRulesBtn" type="button">閉じる</button>
+        </div>
+      </section>
+
+      <section id="unitGuideOverlay" class="rules-overlay" aria-live="polite" hidden>
+        <div class="rules-dialog unit-guide-dialog" role="dialog" aria-modal="true" aria-labelledby="unitGuideTitle">
+          <h2 id="unitGuideTitle">ユニット性能表</h2>
+          <div id="unitGuideTable" class="unit-guide-table"></div>
+          <p class="unit-guide-note">補給不足のユニットは移動力-1、攻撃力-2。森・都市・バンカーなどの地形補正と相性補正は戦闘時に加算されます。</p>
+          <button id="closeUnitGuideBtn" type="button">閉じる</button>
         </div>
       </section>
     </main>

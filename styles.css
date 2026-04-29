@@ -39,6 +39,11 @@ button:hover {
   background: #394145;
 }
 
+.sound-active {
+  border-color: rgba(136, 212, 107, 0.75);
+  color: #dff7d2;
+}
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.45;
@@ -48,6 +53,83 @@ button:disabled {
   width: min(1240px, 100%);
   margin: 0 auto;
   padding: 18px;
+}
+
+.title-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(rgba(17, 19, 20, 0.72), rgba(17, 19, 20, 0.82)),
+    url("assets/terrain-tiles.png") center / 680px auto;
+}
+
+.title-overlay[hidden] {
+  display: none;
+}
+
+.title-dialog {
+  width: min(720px, 100%);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(27, 31, 33, 0.96);
+  padding: 22px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+}
+
+.title-kicker {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.title-dialog h2 {
+  margin-top: 6px;
+  color: var(--text);
+  font-size: 32px;
+  text-transform: none;
+}
+
+.map-select {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.map-card {
+  min-height: 116px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  text-align: left;
+  background: #24292c;
+}
+
+.map-card strong {
+  font-size: 15px;
+}
+
+.map-card span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.map-card.selected {
+  border-color: var(--gold);
+  background: #30302a;
+}
+
+.start-game-btn {
+  width: 100%;
+  margin-top: 16px;
+  background: #365a77;
 }
 
 .topbar {
@@ -244,6 +326,18 @@ canvas {
   background: #6f6b84;
 }
 
+.bunker {
+  background: #65705c;
+}
+
+.airport {
+  background: #5d8395;
+}
+
+.harbor {
+  background: #4f91a6;
+}
+
 .mountain {
   background: #77644e;
 }
@@ -359,6 +453,10 @@ canvas {
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
 }
 
+.unit-guide-dialog {
+  width: min(1040px, 100%);
+}
+
 .rules-dialog h2 {
   color: var(--text);
   font-size: 22px;
@@ -382,6 +480,51 @@ canvas {
   width: 100%;
 }
 
+.unit-guide-table {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.unit-guide-table table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.unit-guide-table th,
+.unit-guide-table td {
+  padding: 8px 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.unit-guide-table thead th {
+  position: sticky;
+  top: 0;
+  background: #22282b;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.unit-guide-table tbody th {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.unit-guide-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.unit-guide-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
 @media (max-width: 860px) {
   .app {
     padding: 12px;
@@ -399,5 +542,9 @@ canvas {
 
   .panel {
     margin-top: 12px;
+  }
+
+  .map-select {
+    grid-template-columns: 1fr;
   }
 }
